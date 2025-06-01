@@ -90,6 +90,20 @@
       background: linear-gradient(#ff4b2b, #ff416c);
       transform: scale(1.05);
     }
+    
+    /* Vibration animation */
+    @keyframes vibrate {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+    
+    .vibrate {
+      animation: vibrate 0.3s linear;
+    }
   </style>
 </head>
 <body>
@@ -115,6 +129,9 @@
     let count = 0;
     let group = 1;
 
+    // Check if vibration API is supported
+    const supportsVibration = 'vibrate' in navigator;
+    
     function getColorForGroup(group) {
       const hue = (group * 55) % 360;
       return `hsl(${hue}, 80%, 60%)`;
@@ -141,19 +158,33 @@
       updateHeading();
       updateCount();
     }
+    
+    function vibrateButton(button) {
+      // Visual vibration
+      button.classList.add("vibrate");
+      setTimeout(() => button.classList.remove("vibrate"), 300);
+      
+      // Device vibration for mobile (50ms vibration)
+      if (supportsVibration && window.innerWidth <= 768) {
+        navigator.vibrate(50);
+      }
+    }
 
     incrementBtn.addEventListener('click', () => {
+      vibrateButton(incrementBtn);
       count++;
       updateUI();
     });
 
     resetBtn.addEventListener('click', () => {
+      vibrateButton(resetBtn);
       count = 0;
       group = 1;
       updateUI();
     });
 
     nextHeadingBtn.addEventListener('click', () => {
+      vibrateButton(nextHeadingBtn);
       group++;
       updateHeading();
     });
