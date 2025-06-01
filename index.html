@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Dynamic Counter App</title>
+  <title>Counter</title>
   <style>
     body {
       font-family: 'Poppins', Arial, sans-serif;
@@ -120,7 +120,10 @@
   </div>
 
   <!-- Audio element for the click sound (hidden) -->
-  <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-modern-click-box-check-1120.mp3" preload="auto"></audio>
+  <audio id="clickSound" preload="auto">
+    <source src="click.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
 
   <script>
     const headingEl = document.getElementById('heading');
