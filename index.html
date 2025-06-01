@@ -119,12 +119,16 @@
     </div>
   </div>
 
+  <!-- Audio element for the click sound (hidden) -->
+  <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-modern-click-box-check-1120.mp3" preload="auto"></audio>
+
   <script>
     const headingEl = document.getElementById('heading');
     const countEl = document.getElementById('count');
     const incrementBtn = document.getElementById('incrementBtn');
     const resetBtn = document.getElementById('resetBtn');
     const nextHeadingBtn = document.getElementById('nextHeadingBtn');
+    const clickSound = document.getElementById('clickSound');
 
     let count = 0;
     let group = 1;
@@ -159,6 +163,12 @@
       updateCount();
     }
     
+    function playClickSound() {
+      // Reset sound to start and play
+      clickSound.currentTime = 0;
+      clickSound.play().catch(e => console.log("Sound playback prevented:", e));
+    }
+    
     function vibrateButton(button) {
       // Visual vibration
       button.classList.add("vibrate");
@@ -168,6 +178,9 @@
       if (supportsVibration && window.innerWidth <= 768) {
         navigator.vibrate(50);
       }
+      
+      // Play click sound
+      playClickSound();
     }
 
     incrementBtn.addEventListener('click', () => {
