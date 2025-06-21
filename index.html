@@ -2,162 +2,593 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Counter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Daily Tasbih Counter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
-      font-family: 'Poppins', Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      height: 100vh;
+    :root {
+      --primary: #4a6cf7;
+      --primary-dark: #3a5ce4;
+      --secondary: #6c63ff;
+      --accent: #ff6b6b;
+      --light: #f8f9fa;
+      --dark: #343a40;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 20px;
+      color: var(--dark);
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
       overflow: hidden;
+      position: relative;
+    }
+
+    .app-header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .app-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .app-subtitle {
+      font-size: 0.9rem;
+      opacity: 0.9;
     }
 
     .counter-container {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      width: 90%;
-      max-width: 320px;
-      border-radius: 25px;
-      padding: 30px 20px;
-      text-align: center;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 20px;
     }
 
-    .count {
-      font-size: 80px;
-      font-weight: bold;
-      color: #fff;
+    .tasbih-tabs {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-btn {
+      padding: 10px 15px;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--dark);
+      opacity: 0.6;
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      opacity: 1;
+      color: var(--primary);
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .tasbih-block {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .tasbih-block.active {
+      display: flex;
+    }
+
+    .tasbih-label {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 10px;
+      color: var(--dark);
+    }
+
+    .tasbih-count {
+      font-size: 3.5rem;
+      font-weight: 700;
       margin: 15px 0;
-      transition: transform 0.3s ease;
+      color: var(--primary);
+      transition: var(--transition);
     }
 
-    .count.animate {
-      transform: scale(1.2);
+    .tasbih-count.animate {
+      transform: scale(1.1);
+      color: var(--accent);
     }
 
     .increment-btn {
-      width: 180px;
-      height: 180px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #36d1dc, #012166);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
-      font-size: 52px;
+      font-size: 1.8rem;
       font-weight: bold;
       border: none;
       cursor: pointer;
-      transition: all 0.3s ease;
-      margin: 30px 0;
+      transition: var(--transition);
+      box-shadow: 0 6px 15px rgba(74, 108, 247, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 10px 0;
     }
 
     .increment-btn:hover {
-      background: linear-gradient(135deg, #ff4b2b, #ff416c);
-      transform: scale(1.1);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(74, 108, 247, 0.4);
     }
 
-    .small-buttons {
+    .increment-btn:active {
+      transform: translateY(1px);
+    }
+
+    .action-buttons {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
+      margin-top: 20px;
       gap: 10px;
     }
 
-    .small-btn {
+    .action-btn {
       flex: 1;
-      height: 50px;
-      border-radius: 12px;
+      padding: 12px;
+      border-radius: 10px;
       border: none;
-      background: linear-gradient(#36d1dc, #5b86e5);
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 0.9rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: var(--transition);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
     }
 
-    .small-btn:hover {
-      background: linear-gradient(#ff4b2b, #ff416c);
-      transform: scale(1.05);
+    .reset-btn {
+      background: #f8f9fa;
+      color: var(--dark);
     }
 
-    @keyframes vibrate {
-      0% { transform: translate(0); }
-      20% { transform: translate(-2px, 2px); }
-      40% { transform: translate(-2px, -2px); }
-      60% { transform: translate(2px, 2px); }
-      80% { transform: translate(2px, -2px); }
-      100% { transform: translate(0); }
+    .reset-btn:hover {
+      background: #e9ecef;
     }
 
-    .vibrate {
-      animation: vibrate 0.3s linear;
+    .complete-btn {
+      background: linear-gradient(135deg, #20c997, #38d9a9);
+      color: white;
+    }
+
+    .complete-btn:hover {
+      background: linear-gradient(135deg, #12b886, #20c997);
+      box-shadow: 0 4px 15px rgba(32, 201, 151, 0.3);
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 6px;
+      background: #e9ecef;
+      border-radius: 3px;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+
+    .stats-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+
+    .daily-goal {
+      text-align: center;
+      margin-top: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+
+    .daily-goal h3 {
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+
+    .daily-goal p {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+
+    .app-footer {
+      padding: 15px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #6c757d;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .pulse {
+      animation: pulse 1.5s infinite;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .app-container {
+        border-radius: 15px;
+      }
+      
+      .app-header {
+        padding: 15px;
+      }
+      
+      .app-title {
+        font-size: 1.3rem;
+      }
+      
+      .increment-btn {
+        width: 100px;
+        height: 100px;
+        font-size: 1.5rem;
+      }
+      
+      .tasbih-count {
+        font-size: 3rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #121212, #1e1e1e);
+      }
+      
+      .app-container {
+        background: #2d2d2d;
+        color: #f8f9fa;
+      }
+      
+      .tasbih-label, .tasbih-count {
+        color: #f8f9fa;
+      }
+      
+      .reset-btn {
+        background: #3d3d3d;
+        color: #f8f9fa;
+      }
+      
+      .reset-btn:hover {
+        background: #4d4d4d;
+      }
+      
+      .daily-goal {
+        background: #3d3d3d;
+      }
+      
+      .app-footer {
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
     }
   </style>
 </head>
 <body>
-  <div class="counter-container">
-    <h2 id="count" class="count" aria-label="Counter Value">0</h2>
+  <div class="app-container">
+    <div class="app-header">
+      <h1 class="app-title">Daily Tasbih Counter</h1>
+      <p class="app-subtitle">Count your daily dhikr with ease</p>
+    </div>
 
-    <button id="incrementBtn" class="increment-btn" aria-label="Increment">+</button>
+    <div class="counter-container">
+      <div class="tasbih-tabs">
+        <button class="tab-btn active" data-tab="subhanallah">
+          <i class="fas fa-moon"></i> Subhanallah
+        </button>
+        <button class="tab-btn" data-tab="alhamdulillah">
+          <i class="fas fa-sun"></i> Alhamdulillah
+        </button>
+        <button class="tab-btn" data-tab="allahuakbar">
+          <i class="fas fa-star"></i> Allahu Akbar
+        </button>
+      </div>
 
-    <div class="small-buttons">
-      <button id="resetBtn" class="small-btn" aria-label="Reset Counter">Reset</button>
+      <div id="subhanallahBlock" class="tasbih-block active">
+        <div class="tasbih-label">Subhanallah</div>
+        <div id="subhanallahCount" class="tasbih-count">0</div>
+        <button class="increment-btn" data-counter="subhanallah">
+          <i class="fas fa-plus"></i>
+        </button>
+        
+        <div class="progress-container">
+          <div id="subhanallahProgress" class="progress-bar" style="width: 0%"></div>
+        </div>
+        
+        <div class="stats-container">
+          <span>Count: <span id="subhanallahCurrent">0</span>/33</span>---
+          <span id="subhanallahPercentage">0%</span>
+        </div>
+      </div>
+
+      <div id="alhamdulillahBlock" class="tasbih-block">
+        <div class="tasbih-label">Alhamdulillah</div>
+        <div id="alhamdulillahCount" class="tasbih-count">0</div>
+        <button class="increment-btn" data-counter="alhamdulillah">
+          <i class="fas fa-plus"></i>
+        </button>
+        
+        <div class="progress-container">
+          <div id="alhamdulillahProgress" class="progress-bar" style="width: 0%"></div>
+        </div>
+        
+        <div class="stats-container">
+          <span>Count: <span id="alhamdulillahCurrent">0</span>/33</span>---
+          <span id="alhamdulillahPercentage">0%</span>
+        </div>
+      </div>
+
+      <div id="allahuakbarBlock" class="tasbih-block">
+        <div class="tasbih-label">Allahu Akbar</div>
+        <div id="allahuakbarCount" class="tasbih-count">0</div>
+        <button class="increment-btn" data-counter="allahuakbar">
+          <i class="fas fa-plus"></i>
+        </button>
+        
+        <div class="progress-container">
+          <div id="allahuakbarProgress" class="progress-bar" style="width: 0%"></div>
+        </div>
+        
+        <div class="stats-container">
+          <span>Count: <span id="allahuakbarCurrent">0</span>/34</span>---
+          <span id="allahuakbarPercentage">0%</span>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="action-btn reset-btn" id="resetBtn">
+          <i class="fas fa-redo"></i> Reset
+        </button>
+        <button class="action-btn complete-btn" id="completeBtn">
+          <i class="fas fa-check-circle"></i> Complete All
+        </button>
+      </div>
+
+      <div class="daily-goal">
+        <h3>Daily Goal</h3>
+        <p>Complete all tasbih to finish your daily dhikr</p>
+      </div>
+    </div>
+
+    <div class="app-footer">
+      Made with <i class="fas fa-heart" style="color: var(--accent)"></i> for Muslims By Aqib Zafeer
     </div>
   </div>
 
-  <audio id="clickSound" preload="auto">
-    <source src="click.wav" type="audio/wav">
-    Your browser does not support the audio element.
-  </audio>
-
   <script>
-    const countEl = document.getElementById('count');
-    const incrementBtn = document.getElementById('incrementBtn');
-    const resetBtn = document.getElementById('resetBtn');
-    const clickSound = document.getElementById('clickSound');
+    // App state
+    const state = {
+      counters: {
+        subhanallah: 0,
+        alhamdulillah: 0,
+        allahuakbar: 0
+      },
+      goals: {
+        subhanallah: 33,
+        alhamdulillah: 33,
+        allahuakbar: 34
+      },
+      currentTab: 'subhanallah',
+      supportsVibration: 'vibrate' in navigator
+    };
 
-    let count = 0;
+    // DOM elements
+    const elements = {
+      tabs: document.querySelectorAll('.tab-btn'),
+      blocks: document.querySelectorAll('.tasbih-block'),
+      incrementBtns: document.querySelectorAll('.increment-btn'),
+      resetBtn: document.getElementById('resetBtn'),
+      completeBtn: document.getElementById('completeBtn')
+    };
 
-    const supportsVibration = 'vibrate' in navigator;
-
-    function updateCount() {
-      countEl.textContent = count;
-      countEl.classList.add("animate");
-      setTimeout(() => countEl.classList.remove("animate"), 150);
+    // Initialize the app
+    function init() {
+      // Load saved counters from localStorage
+      loadCounters();
+      
+      // Set up event listeners
+      setupEventListeners();
+      
+      // Update UI with initial state
+      updateAllUI();
     }
 
-    function playClickSound() {
-      clickSound.currentTime = 0;
-      clickSound.play().catch(e => console.log("Sound playback prevented:", e));
-    }
-
-    function vibrateButton(button) {
-      button.classList.add("vibrate");
-      setTimeout(() => button.classList.remove("vibrate"), 300);
-
-      if (supportsVibration && window.innerWidth <= 768) {
-        navigator.vibrate(50);
+    // Load counters from localStorage
+    function loadCounters() {
+      const saved = localStorage.getItem('tasbihCounters');
+      if (saved) {
+        state.counters = JSON.parse(saved);
       }
-
-      playClickSound();
     }
 
-    incrementBtn.addEventListener('click', () => {
-      vibrateButton(incrementBtn);
-      count++;
-      updateCount();
-    });
+    // Save counters to localStorage
+    function saveCounters() {
+      localStorage.setItem('tasbihCounters', JSON.stringify(state.counters));
+    }
 
-    resetBtn.addEventListener('click', () => {
-      vibrateButton(resetBtn);
-      count = 0;
-      updateCount();
-    });
+    // Set up all event listeners
+    function setupEventListeners() {
+      // Tab switching
+      elements.tabs.forEach(tab => {
+        tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+      });
 
-    updateCount();
+      // Increment buttons
+      elements.incrementBtns.forEach(btn => {
+        btn.addEventListener('click', () => increment(btn.dataset.counter));
+      });
+
+      // Reset button
+      elements.resetBtn.addEventListener('click', resetAll);
+
+      // Complete all button
+      elements.completeBtn.addEventListener('click', completeAll);
+    }
+
+    // Switch between tabs
+    function switchTab(tabName) {
+      state.currentTab = tabName;
+      
+      // Update active tab UI
+      elements.tabs.forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.tab === tabName);
+      });
+      
+      // Show the correct block
+      elements.blocks.forEach(block => {
+        block.classList.toggle('active', block.id === `${tabName}Block`);
+      });
+    }
+
+    // Increment a counter
+    function increment(counterName) {
+      if (state.counters[counterName] < state.goals[counterName]) {
+        state.counters[counterName]++;
+        saveCounters();
+        updateCounterUI(counterName);
+        vibrate();
+      } else {
+        // Already at max - show some feedback
+        const countElement = document.getElementById(`${counterName}Count`);
+        countElement.classList.add('animate');
+        setTimeout(() => countElement.classList.remove('animate'), 300);
+      }
+    }
+
+    // Reset all counters
+    function resetAll() {
+      if (confirm('Are you sure you want to reset all counters?')) {
+        for (let key in state.counters) {
+          state.counters[key] = 0;
+        }
+        saveCounters();
+        updateAllUI();
+        vibrate(100);
+      }
+    }
+
+    // Complete all counters
+    function completeAll() {
+      for (let key in state.counters) {
+        state.counters[key] = state.goals[key];
+      }
+      saveCounters();
+      updateAllUI();
+      vibrate([100, 50, 100]);
+      
+      // Show celebration effect
+      document.querySelector('.app-header').classList.add('pulse');
+      setTimeout(() => {
+        document.querySelector('.app-header').classList.remove('pulse');
+      }, 3000);
+    }
+
+    // Update UI for a specific counter
+    function updateCounterUI(counterName) {
+      const count = state.counters[counterName];
+      const goal = state.goals[counterName];
+      const percentage = Math.min(100, Math.round((count / goal) * 100));
+      
+      // Update count display
+      document.getElementById(`${counterName}Count`).textContent = count;
+      
+      // Animate the count
+      const countElement = document.getElementById(`${counterName}Count`);
+      countElement.classList.add('animate');
+      setTimeout(() => countElement.classList.remove('animate'), 300);
+      
+      // Update progress bar
+      document.getElementById(`${counterName}Progress`).style.width = `${percentage}%`;
+      
+      // Update stats
+      document.getElementById(`${counterName}Current`).textContent = count;
+      document.getElementById(`${counterName}Percentage`).textContent = `${percentage}%`;
+    }
+
+    // Update all UI elements
+    function updateAllUI() {
+      for (let key in state.counters) {
+        updateCounterUI(key);
+      }
+    }
+
+    // Vibrate device if supported
+    function vibrate(pattern = 50) {
+      if (state.supportsVibration) {
+        navigator.vibrate(pattern);
+      }
+    }
+
+    // Initialize the app when DOM is loaded
+    document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
