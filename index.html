@@ -16,6 +16,25 @@
       --dark: #343a40;
       --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       --transition: all 0.3s ease;
+      
+      /* Light mode colors */
+      --bg-color: #f8f9fa;
+      --card-color: #ffffff;
+      --text-color: #343a40;
+      --border-color: rgba(0, 0, 0, 0.1);
+      --secondary-text: #6c757d;
+      --button-bg: #f8f9fa;
+      --button-hover: #e9ecef;
+    }
+
+    .dark-mode {
+      --bg-color: #121212;
+      --card-color: #1e1e1e;
+      --text-color: #f8f9fa;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --secondary-text: #adb5bd;
+      --button-bg: #2d2d2d;
+      --button-hover: #3d3d3d;
     }
 
     * {
@@ -26,23 +45,25 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      background: var(--bg-color);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 20px;
-      color: var(--dark);
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .app-container {
       width: 100%;
-      max-width: 420px;
-      background: white;
+      max-width: 450px;
+      background: var(--card-color);
       border-radius: 20px;
       box-shadow: var(--shadow);
       overflow: hidden;
       position: relative;
+      transition: background-color 0.3s ease;
     }
 
     .app-header {
@@ -68,65 +89,33 @@
       padding: 20px;
     }
 
-    .tasbih-tabs {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 20px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    .tab-btn {
-      padding: 10px 15px;
-      background: none;
-      border: none;
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--dark);
-      opacity: 0.6;
-      cursor: pointer;
-      position: relative;
-      transition: var(--transition);
-    }
-
-    .tab-btn.active {
-      opacity: 1;
-      color: var(--primary);
-    }
-
-    .tab-btn.active::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: var(--primary);
-      border-radius: 3px 3px 0 0;
-    }
-
     .tasbih-block {
-      display: none;
+      display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px 0;
-      animation: fadeIn 0.5s ease;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border-color);
     }
 
-    .tasbih-block.active {
-      display: flex;
+    .tasbih-block:last-child {
+      border-bottom: none;
     }
 
     .tasbih-label {
       font-size: 1.2rem;
       font-weight: 500;
       margin-bottom: 10px;
-      color: var(--dark);
+      color: var(--text-color);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .tasbih-count {
-      font-size: 3.5rem;
+      font-size: 3rem;
       font-weight: 700;
-      margin: 15px 0;
+      margin: 10px 0;
       color: var(--primary);
       transition: var(--transition);
     }
@@ -137,12 +126,12 @@
     }
 
     .increment-btn {
-      width: 120px;
-      height: 120px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       font-weight: bold;
       border: none;
       cursor: pointer;
@@ -151,7 +140,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 10px 0;
+      margin: 5px 0;
     }
 
     .increment-btn:hover {
@@ -186,12 +175,12 @@
     }
 
     .reset-btn {
-      background: #f8f9fa;
-      color: var(--dark);
+      background: var(--button-bg);
+      color: var(--text-color);
     }
 
     .reset-btn:hover {
-      background: #e9ecef;
+      background: var(--button-hover);
     }
 
     .complete-btn {
@@ -207,9 +196,9 @@
     .progress-container {
       width: 100%;
       height: 6px;
-      background: #e9ecef;
+      background: var(--button-bg);
       border-radius: 3px;
-      margin-top: 20px;
+      margin-top: 15px;
       overflow: hidden;
     }
 
@@ -223,35 +212,58 @@
     .stats-container {
       display: flex;
       justify-content: space-between;
-      margin-top: 15px;
+      margin-top: 12px;
       font-size: 0.85rem;
-      color: #6c757d;
+      color: var(--secondary-text);
+      width: 100%;
     }
 
     .daily-goal {
       text-align: center;
       margin-top: 20px;
       padding: 15px;
-      background: #f8f9fa;
+      background: var(--button-bg);
       border-radius: 10px;
     }
 
     .daily-goal h3 {
       font-size: 1rem;
       margin-bottom: 5px;
+      color: var(--text-color);
     }
 
     .daily-goal p {
       font-size: 0.9rem;
-      color: #6c757d;
+      color: var(--secondary-text);
     }
 
     .app-footer {
       padding: 15px;
       text-align: center;
       font-size: 0.8rem;
-      color: #6c757d;
-      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      color: var(--secondary-text);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
     }
 
     @keyframes fadeIn {
@@ -284,50 +296,21 @@
       }
       
       .increment-btn {
-        width: 100px;
-        height: 100px;
-        font-size: 1.5rem;
+        width: 80px;
+        height: 80px;
+        font-size: 1.3rem;
       }
       
       .tasbih-count {
-        font-size: 3rem;
+        font-size: 2.5rem;
       }
       
       .action-buttons {
         flex-direction: column;
       }
-    }
-
-    /* Dark mode */
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #121212, #1e1e1e);
-      }
       
-      .app-container {
-        background: #2d2d2d;
-        color: #f8f9fa;
-      }
-      
-      .tasbih-label, .tasbih-count {
-        color: #f8f9fa;
-      }
-      
-      .reset-btn {
-        background: #3d3d3d;
-        color: #f8f9fa;
-      }
-      
-      .reset-btn:hover {
-        background: #4d4d4d;
-      }
-      
-      .daily-goal {
-        background: #3d3d3d;
-      }
-      
-      .app-footer {
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      .tasbih-label {
+        font-size: 1.1rem;
       }
     }
   </style>
@@ -335,77 +318,107 @@
 <body>
   <div class="app-container">
     <div class="app-header">
+      <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+      </button>
       <h1 class="app-title">Daily Tasbih Counter</h1>
       <p class="app-subtitle">Count your daily dhikr with ease</p>
     </div>
 
     <div class="counter-container">
-      <div class="tasbih-tabs">
-        <button class="tab-btn active" data-tab="subhanallah">
+      <!-- Subhanallah Counter -->
+      <div class="tasbih-block">
+        <div class="tasbih-label">
           <i class="fas fa-moon"></i> Subhanallah
-        </button>
-        <button class="tab-btn" data-tab="alhamdulillah">
-          <i class="fas fa-sun"></i> Alhamdulillah
-        </button>
-        <button class="tab-btn" data-tab="allahuakbar">
-          <i class="fas fa-star"></i> Allahu Akbar
-        </button>
-      </div>
-
-      <div id="subhanallahBlock" class="tasbih-block active">
-        <div class="tasbih-label">Subhanallah</div>
+        </div>
         <div id="subhanallahCount" class="tasbih-count">0</div>
         <button class="increment-btn" data-counter="subhanallah">
           <i class="fas fa-plus"></i>
         </button>
-        
         <div class="progress-container">
           <div id="subhanallahProgress" class="progress-bar" style="width: 0%"></div>
         </div>
-        
         <div class="stats-container">
-          <span>Count: <span id="subhanallahCurrent">0</span>/33</span>---
+          <span>Count: <span id="subhanallahCurrent">0</span>/33</span>
           <span id="subhanallahPercentage">0%</span>
         </div>
       </div>
 
-      <div id="alhamdulillahBlock" class="tasbih-block">
-        <div class="tasbih-label">Alhamdulillah</div>
+      <!-- Alhamdulillah Counter -->
+      <div class="tasbih-block">
+        <div class="tasbih-label">
+          <i class="fas fa-sun"></i> Alhamdulillah
+        </div>
         <div id="alhamdulillahCount" class="tasbih-count">0</div>
         <button class="increment-btn" data-counter="alhamdulillah">
           <i class="fas fa-plus"></i>
         </button>
-        
         <div class="progress-container">
           <div id="alhamdulillahProgress" class="progress-bar" style="width: 0%"></div>
         </div>
-        
         <div class="stats-container">
-          <span>Count: <span id="alhamdulillahCurrent">0</span>/33</span>---
+          <span>Count: <span id="alhamdulillahCurrent">0</span>/33</span>
           <span id="alhamdulillahPercentage">0%</span>
         </div>
       </div>
 
-      <div id="allahuakbarBlock" class="tasbih-block">
-        <div class="tasbih-label">Allahu Akbar</div>
+      <!-- Allahu Akbar Counter -->
+      <div class="tasbih-block">
+        <div class="tasbih-label">
+          <i class="fas fa-star"></i> Allahu Akbar
+        </div>
         <div id="allahuakbarCount" class="tasbih-count">0</div>
         <button class="increment-btn" data-counter="allahuakbar">
           <i class="fas fa-plus"></i>
         </button>
-        
         <div class="progress-container">
           <div id="allahuakbarProgress" class="progress-bar" style="width: 0%"></div>
         </div>
-        
         <div class="stats-container">
-          <span>Count: <span id="allahuakbarCurrent">0</span>/34</span>---
+          <span>Count: <span id="allahuakbarCurrent">0</span>/34</span>
           <span id="allahuakbarPercentage">0%</span>
+        </div>
+      </div>
+
+      <!-- Astagfirullah Counter -->
+      <div class="tasbih-block">
+        <div class="tasbih-label">
+          <i class="fas fa-hands-praying"></i> Astagfirullah
+        </div>
+        <div id="astagfirullahCount" class="tasbih-count">0</div>
+        <button class="increment-btn" data-counter="astagfirullah">
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="progress-container">
+          <div id="astagfirullahProgress" class="progress-bar" style="width: 0%"></div>
+        </div>
+        <div class="stats-container">
+          <span>Count: <span id="astagfirullahCurrent">0</span>/100</span>
+          <span id="astagfirullahPercentage">0%</span>
+        </div>
+      </div>
+
+      <!-- Ayat-e-Kareema Counter -->
+      <div class="tasbih-block">
+        <div class="tasbih-label">
+          <i class="fas fa-quran"></i> Ayat-e-Kareema
+        </div>
+        <div id="ayatCount" class="tasbih-count">0</div>
+        <button class="increment-btn" data-counter="ayat">
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="progress-container">
+          <div id="ayatProgress" class="progress-bar" style="width: 0%"></div>
+        </div>
+        <div class="stats-container">
+          <span>Count: <span id="ayatCurrent">0</span>/100</span>
+          <span id="ayatPercentage">0%</span>
         </div>
       </div>
 
       <div class="action-buttons">
         <button class="action-btn reset-btn" id="resetBtn">
-          <i class="fas fa-redo"></i> Reset
+          <i class="fas fa-redo"></i> Reset All
         </button>
         <button class="action-btn complete-btn" id="completeBtn">
           <i class="fas fa-check-circle"></i> Complete All
@@ -419,7 +432,7 @@
     </div>
 
     <div class="app-footer">
-      Made with <i class="fas fa-heart" style="color: var(--accent)"></i> for Muslims By Aqib Zafeer
+      Made with <i class="fas fa-heart" style="color: var(--accent)"></i> for Muslims by Aqib Zafeer
     </div>
   </div>
 
@@ -429,28 +442,27 @@
       counters: {
         subhanallah: 0,
         alhamdulillah: 0,
-        allahuakbar: 0
+        allahuakbar: 0,
+        astagfirullah: 0,
+        ayat: 0
       },
       goals: {
         subhanallah: 33,
         alhamdulillah: 33,
-        allahuakbar: 34
+        allahuakbar: 34,
+        astagfirullah: 100,
+        ayat: 100
       },
-      currentTab: 'subhanallah',
-      supportsVibration: 'vibrate' in navigator
-    };
-
-    // DOM elements
-    const elements = {
-      tabs: document.querySelectorAll('.tab-btn'),
-      blocks: document.querySelectorAll('.tasbih-block'),
-      incrementBtns: document.querySelectorAll('.increment-btn'),
-      resetBtn: document.getElementById('resetBtn'),
-      completeBtn: document.getElementById('completeBtn')
+      supportsVibration: 'vibrate' in navigator,
+      darkMode: localStorage.getItem('darkMode') === 'true' || 
+               (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
     };
 
     // Initialize the app
     function init() {
+      // Set initial theme
+      setTheme(state.darkMode);
+      
       // Load saved counters from localStorage
       loadCounters();
       
@@ -461,11 +473,32 @@
       updateAllUI();
     }
 
+    // Set theme (dark/light)
+    function setTheme(isDark) {
+      state.darkMode = isDark;
+      localStorage.setItem('darkMode', isDark);
+      
+      if (isDark) {
+        document.body.classList.add('dark-mode');
+        document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i>';
+      } else {
+        document.body.classList.remove('dark-mode');
+        document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon"></i>';
+      }
+    }
+
+    // Toggle theme
+    function toggleTheme() {
+      setTheme(!state.darkMode);
+    }
+
     // Load counters from localStorage
     function loadCounters() {
       const saved = localStorage.getItem('tasbihCounters');
       if (saved) {
-        state.counters = JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        // Merge with defaults to ensure all counters exist
+        state.counters = {...state.counters, ...parsed};
       }
     }
 
@@ -476,36 +509,19 @@
 
     // Set up all event listeners
     function setupEventListeners() {
-      // Tab switching
-      elements.tabs.forEach(tab => {
-        tab.addEventListener('click', () => switchTab(tab.dataset.tab));
-      });
-
       // Increment buttons
-      elements.incrementBtns.forEach(btn => {
+      document.querySelectorAll('.increment-btn').forEach(btn => {
         btn.addEventListener('click', () => increment(btn.dataset.counter));
       });
 
       // Reset button
-      elements.resetBtn.addEventListener('click', resetAll);
+      document.getElementById('resetBtn').addEventListener('click', resetAll);
 
       // Complete all button
-      elements.completeBtn.addEventListener('click', completeAll);
-    }
+      document.getElementById('completeBtn').addEventListener('click', completeAll);
 
-    // Switch between tabs
-    function switchTab(tabName) {
-      state.currentTab = tabName;
-      
-      // Update active tab UI
-      elements.tabs.forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.tab === tabName);
-      });
-      
-      // Show the correct block
-      elements.blocks.forEach(block => {
-        block.classList.toggle('active', block.id === `${tabName}Block`);
-      });
+      // Theme toggle
+      document.getElementById('themeToggle').addEventListener('click', toggleTheme);
     }
 
     // Increment a counter
