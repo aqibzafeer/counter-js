@@ -28,14 +28,6 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .heading {
-      font-size: 26px;
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: #fff;
-      transition: color 0.4s ease;
-    }
-
     .count {
       font-size: 80px;
       font-weight: bold;
@@ -69,7 +61,7 @@
 
     .small-buttons {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       gap: 10px;
     }
 
@@ -90,8 +82,7 @@
       background: linear-gradient(#ff4b2b, #ff416c);
       transform: scale(1.05);
     }
-    
-    /* Vibration animation */
+
     @keyframes vibrate {
       0% { transform: translate(0); }
       20% { transform: translate(-2px, 2px); }
@@ -100,7 +91,7 @@
       80% { transform: translate(2px, -2px); }
       100% { transform: translate(0); }
     }
-    
+
     .vibrate {
       animation: vibrate 0.3s linear;
     }
@@ -108,51 +99,29 @@
 </head>
 <body>
   <div class="counter-container">
-    <h1 id="heading" class="heading" aria-label="Heading">Let's Start!</h1>
     <h2 id="count" class="count" aria-label="Counter Value">0</h2>
 
     <button id="incrementBtn" class="increment-btn" aria-label="Increment">+</button>
 
     <div class="small-buttons">
       <button id="resetBtn" class="small-btn" aria-label="Reset Counter">Reset</button>
-      <button id="nextHeadingBtn" class="small-btn" aria-label="Next Heading">Next</button>
     </div>
   </div>
 
-  <!-- Audio element for the click sound (hidden) -->
   <audio id="clickSound" preload="auto">
     <source src="click.wav" type="audio/wav">
     Your browser does not support the audio element.
   </audio>
 
   <script>
-    const headingEl = document.getElementById('heading');
     const countEl = document.getElementById('count');
     const incrementBtn = document.getElementById('incrementBtn');
     const resetBtn = document.getElementById('resetBtn');
-    const nextHeadingBtn = document.getElementById('nextHeadingBtn');
     const clickSound = document.getElementById('clickSound');
 
     let count = 0;
-    let group = 1;
 
-    // Check if vibration API is supported
     const supportsVibration = 'vibrate' in navigator;
-    
-    function getColorForGroup(group) {
-      const hue = (group * 55) % 360;
-      return `hsl(${hue}, 80%, 60%)`;
-    }
-
-    function updateHeading() {
-      if (count === 0) {
-        headingEl.textContent = "Let's Start!";
-        headingEl.style.color = "#fff";
-      } else {
-        headingEl.textContent = `Heading ${group}`;
-        headingEl.style.color = getColorForGroup(group);
-      }
-    }
 
     function updateCount() {
       countEl.textContent = count;
@@ -160,52 +129,35 @@
       setTimeout(() => countEl.classList.remove("animate"), 150);
     }
 
-    function updateUI() {
-      group = Math.floor(count / 15) + 1;
-      updateHeading();
-      updateCount();
-    }
-    
     function playClickSound() {
-      // Reset sound to start and play
       clickSound.currentTime = 0;
       clickSound.play().catch(e => console.log("Sound playback prevented:", e));
     }
-    
+
     function vibrateButton(button) {
-      // Visual vibration
       button.classList.add("vibrate");
       setTimeout(() => button.classList.remove("vibrate"), 300);
-      
-      // Device vibration for mobile (50ms vibration)
+
       if (supportsVibration && window.innerWidth <= 768) {
         navigator.vibrate(50);
       }
-      
-      // Play click sound
+
       playClickSound();
     }
 
     incrementBtn.addEventListener('click', () => {
       vibrateButton(incrementBtn);
       count++;
-      updateUI();
+      updateCount();
     });
 
     resetBtn.addEventListener('click', () => {
       vibrateButton(resetBtn);
       count = 0;
-      group = 1;
-      updateUI();
+      updateCount();
     });
 
-    nextHeadingBtn.addEventListener('click', () => {
-      vibrateButton(nextHeadingBtn);
-      group++;
-      updateHeading();
-    });
-
-    updateUI();
+    updateCount();
   </script>
 </body>
 </html>
